@@ -25,7 +25,7 @@ The Gomoku game usually uses a 10x10 board to play and the first player who can 
 
 ## Take action/ Model output
 
-The final output of the model is the Q value of 100 cells, and the model will choose the index of the cell with the highest Q value and use that as the action to take. But the output of the model is a variable that is the index in a 1D matrix, so we will have to use the function *index_1D_to_2D* to transfer that index into 2 variables that determine which column and row is that in the corresponding 2D matrix. Then the model can take action with the function *action(rows, cols)* or take action and learn the reward for that action with the function *play_step(rows, cols)* which will return the reward and whether that action will end the game or not.
+The final output of the model is the Q value of 100 cells, and the model will choose the index of the cell with the highest Q value and use that as the action to take. But the output of the model is a variable that is the index in a 1D matrix, so we will have to use the function *index_1D_to_2D* to transfer that index into 2 variables that determine which column and row is that in the corresponding 2D matrix. Then the model can take action with the function *action(rows, cols)* or take action and learn the reward for that action with the function *play_step(rows, cols)* which will return the reward and whether that action will end the game or not. You can also tweak this function in gomoku.py to change the reward that is more suitable for your model.
 
 ## Save the model
 
