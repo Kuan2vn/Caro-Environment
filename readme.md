@@ -21,18 +21,18 @@ To unify, we decided to use **PyTorch** as a common framework to build deep lear
 
 ## The environment/ Model input
 
-The Gomoku game usually uses a 10x10 board to play and the first player who can place 5 consecutive pieces horizontally, vertically or diagonally will be the winner. So the state of the environment will be a 2D numpy array with a dimension of 10x10 , with the number 0 used to indicate that the corresponding cell is empty, 1 indicates that the cell has been marked by a white piece and -1 indicates that the cell has been marked by a black piece. To use this as a input to the model, the state will flatten to a 1D numpy array with 1x100 dimension, then the model can use that information to study.
+The Gomoku game usually uses a 10x10 board to play and the first player who can place 5 consecutive pieces horizontally, vertically or diagonally will be the winner. So the state of the environment will be a 2D numpy array with a dimension of 10x10 , with the number 0 used to indicate that the corresponding cell is empty, 1 indicates that the cell has been marked by a white piece and -1 indicates that the cell has been marked by a black piece. To use this as a input to the model, the state will flatten to a 1D numpy array with 1x100 dimension, you can get the 1D numpy array with the function *env.get_state()*. Or if you wish to feed the model with 2D array, you can delete the reshape function in the *get_state* function in *gomoku.py* file.
 
-## Take action/ Model output
+## Take action/ Model output (For DQN)
 
-The final output of the model is the Q value of 100 cells, and the model will choose the index of the cell with the highest Q value and use that as the action to take. But the output of the model is a variable that is the index in a 1D matrix, so we will have to use the function *index_1D_to_2D* to transfer that index into 2 variables that determine which column and row is that in the corresponding 2D matrix. Then the model can take action with the function *action(rows, cols)* or take action and learn the reward for that action with the function *play_step(rows, cols)* which will return the reward and whether that action will end the game or not. You can also tweak this function in gomoku.py to change the reward that is more suitable for your model.
+The final output of the model is the Q value of 100 cells, and the model will choose the index of the cell with the highest Q value and use that as the action to take. But the output of the model is a variable that is the index in a 1D matrix, so we will have to use the function *index_1D_to_2D* to transfer that index into 2 variables that determine which column and row is that in the corresponding 2D matrix. Then the model can take action with the function *action(rows, cols)* or take action and learn the reward for that action with the function *take_action(rows, cols)* which will return the reward and whether that action will end the game or not. You can also tweak this function in *gomoku.py* to change the reward that is more suitable for your model.
 
 ## Save the model
 
-When the model completed training, we can save the model with the function *agent.model.save()*, which will create a folder named fast_model and save the current model state as a .pth file. Or you can save the model manually with the function *torch.save(self.state_dict(), file_name)*.
+When the model completed training, we can save the model with the function *agent.save_models()*, which will create a folder named fast_model and save the current model state as a .pth file. Or you can save the model manually with the function *torch.save(self.state_dict(), file_name)*.
 
 ## LOAD MODEL
 
 To load the model saved state with a .pth file, you must first create a model with the same amount of layers and units per layer, then you can load the last model state with the function self.model.load_state_dict(torch.load(‘.pth’)). 
 
-Finally, you can find example of training in colab DQN_FOR_GOMOKU_OOP.ipynb.
+Finally, you can find example of training in colab *Actor_Critic_Example.ipynb.*

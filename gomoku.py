@@ -154,23 +154,81 @@ class Gomoku:
         self.n_to_win = n_to_win
 
         pygame.init()
-        pygame.display.set_caption(caption)
-        self.screen = pygame.display.set_mode((self.w, self.h))
-        self.screen.fill(Colors.WHITE)
+        # pygame.display.set_caption(caption)
+        # self.screen = pygame.display.set_mode((self.w, self.h))
+        # self.screen.fill(Colors.WHITE)
         self.player_colors = {"w": Colors.WHITE, "b": Colors.BLACK}
         self.player_names = {"w": "White", "b": "Black"}
 
         self.reset()
-        self.board = GomokuPosition(rows, cols, n_to_win)
-        self.draw_board()
+        # self.board = GomokuPosition(rows, cols, n_to_win)
+        # self.draw_board()
 
     # FOR AI
+    ## START
+    
     def reset(self):
         self.board = GomokuPosition(self.rows, self.cols, self.n_to_win)
         self.draw_board()
 
+    def Board(self):
+        return np.asarray(self.board.to_grid())
+  
 
+    def get_state(self):
+        state = self.Board()
+        state = state.reshape(-1)
+        return state
 
+    def take_action(self, index):
+        
+        x, y = self.index_1D_to_2D(index)
+
+        # for event in pygame.event.get():
+        #     if event.type == pygame.QUIT:
+        #         pygame.quit()
+        #         return
+        
+        # TODO AI TURN
+        # if self.board.last_player() != ai:
+        # move        
+        # self.action(act)
+        
+        done = False
+        # reward = -1
+
+        # self.play_step((x,y))
+
+        # print(self.board.is_empty(x,y))
+
+        if self.board.is_empty(x,y):
+
+            self.action((x,y))
+            reward = -1
+
+        else:
+            reward = -20
+                    
+
+        if self.board.just_won():
+            reward = 100
+            done = True
+
+        if self.board.is_draw():
+            reward = 0
+            done = True
+
+        return reward, done
+
+    def index_2D_to_1D(self, act):
+      x, y = act
+      return y + self.cols*x
+      
+    def index_1D_to_2D(self, index):
+      y = index % self.cols
+      x = int(index / self.cols)
+
+      return x,y
 
     #ENDS HERE
 
@@ -189,19 +247,19 @@ class Gomoku:
         
     def draw_background(self):
         rect = pygame.Rect(0, 0, self.w, self.h)
-        pygame.draw.rect(self.screen, Colors.BROWN, rect)
+        # pygame.draw.rect(self.screen, Colors.BROWN, rect)
 
     def draw_lines(self):
         lines = itertools.chain(self.col_lines(), self.row_lines())
 
-        for start, end in lines:
-            pygame.draw.line(
-                self.screen, 
-                Colors.BLACK, 
-                start, 
-                end, 
-                width=2
-            )
+        # for start, end in lines:
+        #     pygame.draw.line(
+        #         self.screen, 
+        #         Colors.BLACK, 
+        #         start, 
+        #         end, 
+        #         width=2
+        #     )
 
     def draw_board(self):
         self.draw_background()
@@ -257,53 +315,13 @@ class Gomoku:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.make_move(*event.pos)
                     pygame.display.update()                        
-                    # print(self.board)
-                    # print(self.board.last_player())
-                    # print(self.board.just_won())
+                    print(self.board)
+                    print(self.board.last_player())
+                    print(self.board.just_won())
 
         self.show_outcome()
         pygame.display.update()
         self.exit_on_click()
-
-    def play_step(self,act):
-          
-        # for event in pygame.event.get():
-        #     if event.type == pygame.QUIT:
-        #         pygame.quit()
-        #         return
-        
-        # TODO AI TURN
-        # if self.board.last_player() != ai:
-        # move        
-        # self.action(act)
-        
-        done = False
-        # reward = -1
-
-        x, y = act
-
-        # print(self.board.is_empty(x,y))
-
-        if self.board.is_empty(x,y):
-
-            self.action((x,y))
-            reward = -1
-
-        else:
-            reward = -20        
-
-        if self.board.just_won():
-            reward = 100
-            done = True
-
-        if self.board.is_draw():
-            reward = 0
-            done = True
-
-        return reward, done
-
-    def Board(self):
-        return np.asarray(self.board.to_grid())
 
     def action(self, act):
         x, y = act
@@ -313,20 +331,25 @@ class Gomoku:
             y * self.size + self.half_size, 
             x * self.size + self.half_size,
             )
-            pygame.draw.circle(
-            self.screen, 
-            self.player_colors[player], 
-            circle_pos, 
-            self.piece_size
-            )
+            # pygame.draw.circle(
+            # self.screen, 
+            # self.player_colors[player], 
+            # circle_pos, 
+            # self.piece_size
+            # )
 
         # self.make_move(x, y)
 
 
+
 if __name__ == "__main__":
-    game = Gomoku(rows=10, cols=10, n_to_win=4)
-    game.action((1,3))
-    
+    games = Gomoku(rows=5, cols=5, n_to_win=3)
+    games.action((1,5))
+    games.action((2,5))
+    games.action((1,4))
+    games.action((2,4))
+    games.action((1,3))    
+    games.action((2,3))
     # game.reset()
-    print(game.Board())
-    game.play()
+    print(games.Board())
+    # game.play()
