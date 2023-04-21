@@ -37,4 +37,4 @@ To load the model saved state with a .pth file, you must first create a model wi
 
 ## Summary
 Finally, to test the training code, you can run the *train.py* 
-<br>Or, you can find example of training in colab *Actor_Critic_Example.ipynb.*
+<br>Or, you can find training example in colab *Actor_Critic_Example.ipynb.*
