@@ -36,5 +36,5 @@ When the model completed training, we can save the model with the function *agen
 To load the model saved state with a .pth file, you must first create a model with the same amount of layers and units per layer, then you can load the last model state with the function self.model.load_state_dict(torch.load(‘.pth’)). 
 
 ## Summary
-Finally, to test the training code, you can run the *train.py*
+Finally, to test the training code, you can run the *train.py* \n
 Or, you can find example of training in colab *Actor_Critic_Example.ipynb.*
