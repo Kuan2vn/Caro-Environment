@@ -31,8 +31,10 @@ The final output of the model is the Q value of 100 cells, and the model will ch
 
 When the model completed training, we can save the model with the function *agent.save_models()*, which will create a folder named fast_model and save the current model state as a .pth file. Or you can save the model manually with the function *torch.save(self.state_dict(), file_name)*.
 
-## LOAD MODEL
+## Load Model
 
 To load the model saved state with a .pth file, you must first create a model with the same amount of layers and units per layer, then you can load the last model state with the function self.model.load_state_dict(torch.load(‘.pth’)). 
 
-Finally, you can find example of training in colab *Actor_Critic_Example.ipynb.*
+## Summary
+Finally, to test the training code, you can run the *train.py*
+Or, you can find example of training in colab *Actor_Critic_Example.ipynb.*
