@@ -49,10 +49,10 @@ class PPOMemory:
 
 class ActorNetwork(nn.Module):
     def __init__(self, n_actions, input_dims, alpha,
-            fc1_dims=256, fc2_dims=256, chkpt_dir='tmp/ppo/actor'):
+            fc1_dims=256, fc2_dims=256, chkpt_dir='tmp/ppo'):
         super(ActorNetwork, self).__init__()
 
-        self.chkpt_dir = chkpt_dir
+        self.chkpt_dir = chkpt_dir + '/actor'
         
         # self.checkpoint_file = os.path.join(chkpt_dir, 'actor_torch_ppo')
 
@@ -97,10 +97,10 @@ class ActorNetwork(nn.Module):
 
 class CriticNetwork(nn.Module):
     def __init__(self, input_dims, alpha, fc1_dims=256, fc2_dims=256,
-            chkpt_dir='tmp/ppo/critic'):
+            chkpt_dir='tmp/ppo'):
         super(CriticNetwork, self).__init__()
 
-        self.chkpt_dir = chkpt_dir
+        self.chkpt_dir = chkpt_dir + '/critic'
         # self.checkpoint_file = os.path.join(chkpt_dir, 'critic_torch_ppo')
         self.critic = nn.Sequential(
                 nn.Linear(input_dims, fc1_dims),
@@ -140,14 +140,14 @@ class CriticNetwork(nn.Module):
 
 class Agent:
     def __init__(self, n_actions, input_dims, gamma=0.99, alpha=0.0003, gae_lambda=0.95,
-            policy_clip=0.2, batch_size=64, n_epochs=10):
+            policy_clip=0.2, batch_size=64, n_epochs=10, chkpt_dir='tmp/ppo'):
         self.gamma = gamma
         self.policy_clip = policy_clip
         self.n_epochs = n_epochs
         self.gae_lambda = gae_lambda
 
-        self.actor = ActorNetwork(n_actions, input_dims, alpha)
-        self.critic = CriticNetwork(input_dims, alpha)
+        self.actor = ActorNetwork(n_actions, input_dims, alpha, chkpt_dir = chkpt_dir)
+        self.critic = CriticNetwork(input_dims, alpha, chkpt_dir = chkpt_dir)
         self.memory = PPOMemory(batch_size)
        
     def remember(self, state, action, probs, vals, reward, done):
