@@ -226,3 +226,16 @@ class Agent:
                 self.critic.optimizer.step()
 
         self.memory.clear_memory()               
+
+    def index_1D_to_2D(self, index):
+      y = index % 10
+      x = int(index / 10)
+
+      return x,y
+
+    def predict(self, state):
+      action, _, _ = self.choose_action(state)
+      x, y = self.index_1D_to_2D(action)
+
+
+      return (x,y)
